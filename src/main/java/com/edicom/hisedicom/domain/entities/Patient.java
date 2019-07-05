@@ -31,6 +31,7 @@ public class Patient implements Serializable {
 	private Long id;
 	
 	@NotEmpty
+	@Column(unique=true)
 	private String medicalRecord;
 	
 	@NotEmpty
@@ -45,7 +46,7 @@ public class Patient implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createdAt;
 	
-	@Null
+
 	@Column (name="updated_at")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")

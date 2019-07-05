@@ -13,7 +13,7 @@ public interface IPatientService {
 
 	public List<Patient> getPatients();
 	public Optional<Patient> getPatient(String medicalRecord);
-	public void savePatient(Patient patient);
-	public Optional<Patient> updatePatient(Patient patient);
-	public void deletePatient(String medicalReport);
+	public Patient savePatient(Patient patient);
+	public Patient updatePatient(Patient patient);
+	public boolean deletePatient(String medicalReport);
 }
