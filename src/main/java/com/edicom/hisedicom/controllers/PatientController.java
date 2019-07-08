@@ -1,5 +1,6 @@
 package com.edicom.hisedicom.controllers;
 
+import java.rmi.server.UID;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ import com.edicom.hisedicom.domain.entities.Patient;
 import com.edicom.hisedicom.domain.services.IPatientService;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("patients")
 public class PatientController {
 
 	@Autowired
@@ -29,7 +30,7 @@ public class PatientController {
 		
 	}
 	
-	@RequestMapping(value="patients", method= RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="", method= RequestMethod.GET, produces="application/json")
 	public ResponseEntity<List<Patient>> getPatients()
 	{
 		List<Patient> list = patientService.getPatients();
@@ -37,21 +38,24 @@ public class PatientController {
 		
 	}
 	
-	@RequestMapping(value="patients/{medicalrecord}", method=RequestMethod.GET, 
+	@RequestMapping(value="/{medicalrecord}", method=RequestMethod.GET, 
 			produces="application/json")
 	public ResponseEntity<Patient> getPatient(@PathVariable String medicalrecord)
 	{
 		Optional<Patient> patient = patientService.getPatient(medicalrecord);
-		
+		//return patienService.getPatient(medicalrecord)
+				// Sobre repositorio .orElseThrown(()->new ResourceNotFoundException("Patient","medicalrecord",medicalrecord));
 		return patient.map(o -> new ResponseEntity<Patient>(o, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-		
+				
+				
+				
 //		return (!patient.isPresent())? 
 //				new ResponseEntity<>(HttpStatus.NOT_FOUND)
 //				:new ResponseEntity<>(patient.get(),HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="patients/{medicalrecord}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/{medicalrecord}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> deletePatient(@PathVariable String medicalrecord)
 	{
 		Boolean result = patientService.deletePatient(medicalrecord);
@@ -61,17 +65,18 @@ public class PatientController {
 		
 	}
 	
-	@RequestMapping(value="patients", method=RequestMethod.POST, 
+	@RequestMapping(value="", method=RequestMethod.POST, 
 			produces="application/json")
 	public ResponseEntity<Patient> savePatient (@RequestBody Patient patient)
 	{
+		patient.setMedicalRecord(this.MedicalRecordGen());
 		Patient result = patientService.savePatient(patient);
 		return (result==null)?new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 				:new ResponseEntity<>(result, HttpStatus.CREATED);
 	
 	}
 	
-	@RequestMapping(value="patients", method=RequestMethod.PUT, 
+	@RequestMapping(value="", method=RequestMethod.PUT, 
 			produces="application/json")
 	public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient)
 	{
@@ -80,5 +85,9 @@ public class PatientController {
 				: new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	
+	private String MedicalRecordGen()
+	{
+		UID uid = new UID();
+		return "med-"+uid;
+	}
 }
