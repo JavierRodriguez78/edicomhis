@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name="patients")
 public class Patient implements Serializable {
+
 
 	/**
 	 * 
@@ -40,6 +43,12 @@ public class Patient implements Serializable {
 	@NotEmpty
 	private String lastname;
 	
+	@ManyToOne
+	@JoinColumn(name="doctor_id", nullable=false)
+	private Doctor doctor;
+	
+	
+
 	@NotNull
 	@Column (name="created_at")
 	@Temporal(TemporalType.DATE)
@@ -58,13 +67,15 @@ public class Patient implements Serializable {
 	}
 
 
-	public Patient(@NotEmpty String medicalRecord, @NotEmpty String name, @NotEmpty String lastname,
-			@NotNull Date createdAt, Date updatedAt) {
+
+	public Patient(@NotEmpty String medicalRecord, @NotEmpty String name, @NotEmpty String lastname, Doctor doctor,
+			@NotNull Date createdAt) {
+		super();
 		this.medicalRecord = medicalRecord;
 		this.name = name;
 		this.lastname = lastname;
+		this.doctor = doctor;
 		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
 	}
 
 
@@ -105,6 +116,14 @@ public class Patient implements Serializable {
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
 	}
 
 

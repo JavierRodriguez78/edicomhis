@@ -2,6 +2,8 @@ package com.edicom.hisedicom.domain.services.implementations;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +13,15 @@ import com.edicom.hisedicom.domain.services.IDoctorService;
 
 @Service
 public class DoctorServiceImpl implements IDoctorService{
-
+	
+	private static final Log logger =  LogFactory.getLog("DoctorServiceImpl.class");
+	
 	@Autowired
 	private IDoctorDao doctorDao;
 	@Override
 	public List<Doctor> getDoctors() {
 		// TODO Auto-generated method stub
+		logger.debug(doctorDao.getAll());
 		return doctorDao.getAll();
 	}
 	
