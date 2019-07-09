@@ -31,8 +31,14 @@ public class HisedicomApplication {
 		protected void configure(HttpSecurity http) throws Exception{
 			http.csrf().disable()
 			 .addFilterAfter(new JWTAuthorizationFilter(properties), UsernamePasswordAuthenticationFilter.class)
+			
 			 .authorizeRequests()
+			.antMatchers("/webjars/**").permitAll()
+			.antMatchers(HttpMethod.GET, "/webjars/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/swagger-resources/**").permitAll()
+             .antMatchers(HttpMethod.GET, "/v2/api-docs").permitAll()
 			 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+			 .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
 			 .anyRequest().authenticated();
 		}
 	}
