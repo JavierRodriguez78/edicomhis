@@ -1,4 +1,4 @@
-package com.edicom.hisedicom.domain.services.implementations;
+package com.edicom.hisedicom.doctors.application.services.impl;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edicom.hisedicom.domain.dao.IDoctorDao;
-import com.edicom.hisedicom.domain.entities.Doctor;
-import com.edicom.hisedicom.domain.services.IDoctorService;
+import com.edicom.hisedicom.doctors.application.services.IDoctorService;
+import com.edicom.hisedicom.doctors.domain.dao.IDoctorDao;
+import com.edicom.hisedicom.doctors.domain.entities.Doctor;
 
 @Service
 public class DoctorServiceImpl implements IDoctorService{

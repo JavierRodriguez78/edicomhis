@@ -1,11 +1,11 @@
-package com.edicom.hisedicom.domain.services;
+package com.edicom.hisedicom.patients.domain.services;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.edicom.hisedicom.domain.entities.Patient;
+import com.edicom.hisedicom.patients.domain.entities.Patient;
 
 
 

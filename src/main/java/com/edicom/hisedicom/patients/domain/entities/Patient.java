@@ -1,27 +1,31 @@
-package com.edicom.hisedicom.domain.entities;
+package com.edicom.hisedicom.patients.domain.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.edicom.hisedicom.doctors.domain.entities.Doctor;
+
 @Entity
-@Table(name="doctors")
-public class Doctor implements Serializable{
+@Table(name="patients")
+public class Patient implements Serializable {
+
 
 	/**
 	 * 
@@ -30,8 +34,11 @@ public class Doctor implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="doctor_id")
 	private Long id;
+	
+	@NotEmpty
+	@Column(unique=true)
+	private String medicalRecord;
 	
 	@NotEmpty
 	private String name;
@@ -39,14 +46,11 @@ public class Doctor implements Serializable{
 	@NotEmpty
 	private String lastname;
 	
-	@NotEmpty
-	private String specialty;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="doctor_id", nullable=false)
+	private Doctor doctor;
 	
-	@NotEmpty
-	@Column(unique=true)
-	private String collegiatenumber;
 	
-
 
 	@NotNull
 	@Column (name="created_at")
@@ -60,89 +64,98 @@ public class Doctor implements Serializable{
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date updatedAt;
 
-	public Doctor() {
-		super();
+
+	public Patient() {
+		
 	}
 
-	
-	
-	public Doctor(Long id, @NotEmpty String name, @NotEmpty String lastname, @NotEmpty String specialty,
-			@NotEmpty String collegiatenumber, @NotNull Date createdAt) {
+
+
+	public Patient(@NotEmpty String medicalRecord, @NotEmpty String name, @NotEmpty String lastname, Doctor doctor,
+			@NotNull Date createdAt) {
 		super();
-		this.id = id;
+		this.medicalRecord = medicalRecord;
 		this.name = name;
 		this.lastname = lastname;
-		this.specialty = specialty;
-		this.collegiatenumber = collegiatenumber;
+		this.doctor = doctor;
 		this.createdAt = createdAt;
 	}
-
 
 
 	public Long getId() {
 		return id;
 	}
 
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+	public String getMedicalRecord() {
+		return medicalRecord;
+	}
+
+
+	public void setMedicalRecord(String medicalRecord) {
+		this.medicalRecord = medicalRecord;
+	}
+
 
 	public String getName() {
 		return name;
 	}
 
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 
 	public String getLastname() {
 		return lastname;
 	}
 
+
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
 
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 
+
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+
 
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
+
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
-	
 
-	public String getSpecialty() {
-		return specialty;
-	}
-
-	public void setSpecialty(String specialty) {
-		this.specialty = specialty;
-	}
-
-	public String getCollegiatenumber() {
-		return collegiatenumber;
-	}
-
-	public void setCollegiatenumber(String collegiatenumber) {
-		this.collegiatenumber = collegiatenumber;
-	}
-	
 
 	@Override
 	public String toString() {
-		return "Doctor [id=" + id + ", name=" + name + ", lastname=" + lastname + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + "]";
+		return "Patient [id=" + id + ", medicalRecord=" + medicalRecord + ", name=" + name + ", lastname=" + lastname
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
+	
 	
 	
 	

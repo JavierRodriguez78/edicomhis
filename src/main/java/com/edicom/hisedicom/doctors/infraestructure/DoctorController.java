@@ -1,4 +1,4 @@
-package com.edicom.hisedicom.controllers;
+package com.edicom.hisedicom.doctors.infraestructure;
 
 import java.util.List;
 
@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.edicom.hisedicom.domain.entities.Doctor;
-import com.edicom.hisedicom.domain.services.IDoctorService;
+import com.edicom.hisedicom.doctors.application.components.DoctorComponent;
+import com.edicom.hisedicom.doctors.application.services.IDoctorService;
+import com.edicom.hisedicom.doctors.domain.entities.Doctor;
 
 @RestController
 @RequestMapping("doctors")
@@ -24,12 +25,14 @@ public class DoctorController {
 	private static final org.apache.commons.logging.Log logger = LogFactory.getLog("DoctorController.class");
 	@Autowired
 	private IDoctorService doctorService;
+	@Autowired
+	private DoctorComponent doctorComponent;
 	
 	
 	@RequestMapping(value="",method=RequestMethod.GET, produces="application/json")
 	public ResponseEntity<List<Doctor>>getDoctors()
 	{
-		List<Doctor> list = doctorService.getDoctors();
+		List<Doctor> list = doctorComponent.getDoctors();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	

@@ -1,5 +1,6 @@
 package com.edicom.hisedicom;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.edicom.hisedicom.aplication.security.JWTAuthorizationFilter;
+import com.edicom.hisedicom.shared.Properties;
 
 @SpringBootApplication
 public class HisedicomApplication {
 
+	@Autowired
+	Properties properties;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(HisedicomApplication.class, args);
 	}
@@ -25,10 +30,9 @@ public class HisedicomApplication {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception{
 			http.csrf().disable()
-			 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+			 .addFilterAfter(new JWTAuthorizationFilter(properties), UsernamePasswordAuthenticationFilter.class)
 			 .authorizeRequests()
-			 .antMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
-			 .antMatchers(HttpMethod.GET, "api/v1/patients").permitAll()
+			 .antMatchers(HttpMethod.POST, "/auth").permitAll()
 			 .anyRequest().authenticated();
 		}
 	}

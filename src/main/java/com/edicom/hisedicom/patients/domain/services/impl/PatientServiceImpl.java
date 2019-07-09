@@ -1,4 +1,4 @@
-package com.edicom.hisedicom.domain.services.implementations;
+package com.edicom.hisedicom.patients.domain.services.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edicom.hisedicom.domain.dao.IPatientDao;
-import com.edicom.hisedicom.domain.entities.Patient;
-import com.edicom.hisedicom.domain.services.IPatientService;
+import com.edicom.hisedicom.patients.domain.dao.IPatientDao;
+import com.edicom.hisedicom.patients.domain.entities.Patient;
+import com.edicom.hisedicom.patients.domain.services.IPatientService;
 
 @Service
 public class PatientServiceImpl implements IPatientService{

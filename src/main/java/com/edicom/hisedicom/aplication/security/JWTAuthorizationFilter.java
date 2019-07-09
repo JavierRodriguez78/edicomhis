@@ -9,10 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.edicom.hisedicom.shared.Properties;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -24,7 +28,18 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private final String HEADER="Authorization";
 	private final String PREFIX="Bearer ";
-	private final String SECRET="edicom";
+
+	private Properties properties;
+	
+	private  String SECRET ;
+	
+	@Autowired
+	public JWTAuthorizationFilter(Properties properties)
+	{
+		this.properties=properties;
+		this.SECRET= properties.getKeyApi();
+	}
+	
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -59,7 +74,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private Claims validateJWT(HttpServletRequest req)
 	{
-		String jwToken = req.getHeader(HEADER).replace(PREFIX,"");
+		String jwToken = req.getHeader(HEADER).replace(PREFIX," ");
+		
 		return Jwts.parser().setSigningKey(SECRET.getBytes())
 				.parseClaimsJws(jwToken).getBody();
 	}
@@ -72,4 +88,5 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 		return true;
 	}
 
+	
 }

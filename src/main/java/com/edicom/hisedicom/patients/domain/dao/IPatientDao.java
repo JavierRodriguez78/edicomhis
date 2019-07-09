@@ -1,10 +1,10 @@
-package com.edicom.hisedicom.domain.dao;
+package com.edicom.hisedicom.patients.domain.dao;
 
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.edicom.hisedicom.domain.entities.Patient;
+import com.edicom.hisedicom.patients.domain.entities.Patient;
 
 public interface IPatientDao extends CrudRepository<Patient, Long>{
 

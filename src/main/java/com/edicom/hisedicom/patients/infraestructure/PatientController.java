@@ -1,4 +1,4 @@
-package com.edicom.hisedicom.controllers;
+package com.edicom.hisedicom.patients.infraestructure;
 
 import java.rmi.server.UID;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.edicom.hisedicom.domain.entities.Patient;
-import com.edicom.hisedicom.domain.services.IPatientService;
+import com.edicom.hisedicom.patients.domain.entities.Patient;
+import com.edicom.hisedicom.patients.domain.services.IPatientService;
 
 @RestController
 @RequestMapping("patients")

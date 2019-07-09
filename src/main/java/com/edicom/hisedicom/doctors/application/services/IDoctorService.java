@@ -1,8 +1,8 @@
-package com.edicom.hisedicom.domain.services;
+package com.edicom.hisedicom.doctors.application.services;
 
 import java.util.List;
 
-import com.edicom.hisedicom.domain.entities.Doctor;
+import com.edicom.hisedicom.doctors.domain.entities.Doctor;
 
 public interface IDoctorService {
 	List<Doctor> getDoctors();

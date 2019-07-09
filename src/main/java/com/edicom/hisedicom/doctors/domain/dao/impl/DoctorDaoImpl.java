@@ -1,4 +1,4 @@
-package com.edicom.hisedicom.domain.dao.impl;
+package com.edicom.hisedicom.doctors.domain.dao.impl;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.edicom.hisedicom.domain.dao.IDoctorDao;
-import com.edicom.hisedicom.domain.entities.Doctor;
+import com.edicom.hisedicom.doctors.domain.dao.IDoctorDao;
+import com.edicom.hisedicom.doctors.domain.entities.Doctor;
 
 
 @Transactional
