@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,13 +23,15 @@ public class ServiceJWTImpl implements IServiceJWT {
 	private String secretKey;
 	
 	@Override
-	public String getJWT(String username) {
+	public String getJWT(String username, HttpServletRequest request) {
 				List<GrantedAuthority> grantedAuthorities = AuthorityUtils
 						.commaSeparatedStringToAuthorityList("ROLE_USER");
 				String token = Jwts
 						.builder()
+						.claim("ip",request.getRemoteAddr())
 						.setId("edicom")
 						.setSubject(username)
+						
 						.claim("authorities", grantedAuthorities.stream()
 								.map(GrantedAuthority::getAuthority)
 								.collect(Collectors.toList()))

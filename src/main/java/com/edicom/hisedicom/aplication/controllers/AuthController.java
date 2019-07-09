@@ -30,17 +30,12 @@ public class AuthController {
 	{
 		
 		Optional<User> result = authDao.findByUsername(user.getUsername());
-		System.out.println(user.getPassword());
 		if (!result.isPresent()) return new ResponseEntity("Datos incorrectos", HttpStatus.BAD_REQUEST); 
-		
-		if(user.getPassword().equals(result.get().getPassword()))return new ResponseEntity("Datos correctos", HttpStatus.OK); 
-			
-		System.out.println(request.getRemoteAddr());
-		
-		
-		
-		
-		String token= serviceJWT.getJWT("xavi");
+		if(!user.getPassword().equals(result.get().getPassword()))return new ResponseEntity("Datos incorrectos", HttpStatus.BAD_REQUEST); 
+	
+		String token= serviceJWT.getJWT(user.getUsername(), request);
+		result.get().setToken(token);
+		authDao.save(result.get());
 		return new ResponseEntity(token, HttpStatus.OK);
 	}
 	

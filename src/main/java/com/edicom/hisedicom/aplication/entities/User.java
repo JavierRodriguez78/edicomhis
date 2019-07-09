@@ -33,7 +33,7 @@ public class User implements Serializable{
 	private String username;
 	@NotEmpty
 	private String password;
-	
+	@Column(name="token", columnDefinition="TEXT")
 	private String token;
 
 

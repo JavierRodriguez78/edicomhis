@@ -1,0 +1,1 @@
+ALTER TABLE users CHANGE token token TEXT;
