@@ -28,8 +28,13 @@ public class HisedicomApplication {
 	class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		@Override
-		protected void configure(HttpSecurity http) throws Exception{
-			http.csrf().disable()
+		protected void configure(HttpSecurity httpSecurity) throws Exception{
+			
+			
+			httpSecurity
+			.cors()
+			.and()
+			.csrf().disable()
 			 .addFilterAfter(new JWTAuthorizationFilter(properties), UsernamePasswordAuthenticationFilter.class)
 			
 			 .authorizeRequests()
