@@ -69,7 +69,6 @@ public class Doctor implements Serializable{
 	public Doctor(Long id, @NotEmpty String name, @NotEmpty String lastname, @NotEmpty String specialty,
 			@NotEmpty String collegiatenumber, @NotNull Date createdAt) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.lastname = lastname;
 		this.specialty = specialty;
