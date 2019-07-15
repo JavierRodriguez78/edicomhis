@@ -68,10 +68,10 @@
 			<artifactId>json</artifactId>
 			<version>20160810</version>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-		</dependency>
+		</dependency -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
