@@ -2,6 +2,7 @@ package com.edicom.hisedicom.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -10,18 +11,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -57,26 +57,6 @@ public class PatientsControllersTest {
 	@Autowired
 	private IDoctorService doctorService;
 	
-	
-	private  Doctor doctor = new Doctor();
-	private  Patient patient= new Patient();
-	
-	@Before
-	public  void setupData() {
-		Date fecha = new Date();
-		this.doctor.setName("Pepe");
-		this.doctor.setCreatedAt(fecha);
-		this.doctor.setSpecialty("General");
-		this.doctor.setLastname("Muños");
-		this.doctor.setCollegiatenumber("ldjldfjl");
-		//this.doctorService.saveDoctor(doctor);
-		this.patient.setName("xavi");
-		this.patient.setLastname("Rodriguez");
-		this.patient.setDoctor(doctor);
-		this.patient.setCreatedAt(fecha);
-		this.patient.setMedicalRecord("1");
-		//this.patientService.savePatient(patient);
-	}
 		
 	   @Before
 		public void setup() {
@@ -86,8 +66,10 @@ public class PatientsControllersTest {
 				.build();
 	}
 	
+	 
 
 	@Test
+	@Order(1)
 	public void returnForbiddenisNotAuthenticated() throws Exception{
 		
 		mvc.perform(get("/patients").contentType(MediaType.APPLICATION_JSON))
@@ -99,6 +81,7 @@ public class PatientsControllersTest {
 	
 	@WithMockUser(username="xavi1", password="123", roles="USER")
 	@Test
+	@Order(2)
 	public void returnNotFoundisUserNotExist() throws Exception{
 		
 		mvc.perform(get("/patients").contentType(MediaType.APPLICATION_JSON))
@@ -109,13 +92,30 @@ public class PatientsControllersTest {
 	
 	@WithMockUser(username="xavi", password="123", roles="USER")
 	@Test
+	@Order(3)
 	public void createNewPatient() throws Exception{
 		
+		Doctor doctor = new Doctor();
+		Patient patient = new Patient();
+		Date fecha = new Date();
+		doctor.setName("Pepe");
+		doctor.setCreatedAt(fecha);
+		doctor.setSpecialty("General");
+		doctor.setLastname("Muños");
+		doctor.setCollegiatenumber("ldjldfjl");
+		//this.doctorService.saveDoctor(doctor);
+		patient.setName("xavi");
+		patient.setLastname("Rodriguez");
+		patient.setDoctor(doctor);
+		patient.setCreatedAt(fecha);
+		patient.setMedicalRecord("1");
 		
-		mvc.perform(post("/patients").contentType(MediaType.APPLICATION_JSON).content(this.toJson(this.patient)))
+		
+		
+		mvc.perform(post("/patients").contentType(MediaType.APPLICATION_JSON).content(this.toJson(patient)))
 		.andDo(print())
 		.andExpect(status().isCreated())
-		.andExpect(jsonPath("$.name").value(this.patient.getName()));
+		.andExpect(jsonPath("$.name").value(patient.getName()));
 		
 		List<Patient> found = patientService.getPatients();
 		assertThat(found).extracting(Patient::getName).contains("xavi");
@@ -125,6 +125,7 @@ public class PatientsControllersTest {
 	
 	@WithMockUser(username="xavi", password="123", roles="USER")
 	@Test
+	@Order(4)
 	public void updatePatient() throws Exception
 	{
 		List<Patient> data = this.patientService.getPatients();
@@ -141,6 +142,38 @@ public class PatientsControllersTest {
 	}
 	
 	
+	  @WithMockUser(username="xavi", password="123", roles="USER")
+			@Test
+			@Order(5)
+			public void deletePatient() 
+			{
+
+			Doctor doctor = new Doctor();
+			Patient patient = new Patient();
+			Date fecha = new Date();
+			doctor.setName("Pepe");
+			doctor.setCreatedAt(fecha);
+			doctor.setSpecialty("General");
+			doctor.setLastname("Muños");
+			doctor.setCollegiatenumber("ldjldfjl");
+			this.doctorService.saveDoctor(doctor);
+			patient.setName("xavi");
+			patient.setLastname("Rodriguez");
+			patient.setDoctor(doctor);
+			patient.setCreatedAt(fecha);
+			patient.setMedicalRecord("1");
+		   // this.doctorService.saveDoctor(doctor);
+		  	this.patientService.savePatient(patient);
+				List<Patient> found = patientService.getPatients();
+				System.out.println(found.get(0).toString());
+//				mvc.perform(delete("/patients/"+ found.get(0).getMedicalRecord()).contentType(MediaType.APPLICATION_JSON))
+//				.andDo(print())
+//				.andExpect(status().isOk());
+				
+			
+			}
+	
+	
 	static byte[] toJson(Object object) throws IOException
 	{
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
@@ -148,10 +181,6 @@ public class PatientsControllersTest {
 		return gson.toJson(object).getBytes();
 	}
 	
-	static String toDateString (Date fecha) {
-		SimpleDateFormat sm = new SimpleDateFormat("yyyy-mm-dd");
-		return sm.format(fecha);
-		}
 	
 	
 }
