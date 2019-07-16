@@ -141,11 +141,10 @@ public class PatientsControllersTest {
 		assertThat(found).extracting(Patient::getLastname).contains("prueba");
 	}
 	
-	
-	  @WithMockUser(username="xavi", password="123", roles="USER")
-			@Test
-			@Order(5)
-			public void deletePatient() 
+	@WithMockUser(username="xavi", password="123", roles="USER")
+	@Test
+	@Order(5)
+	public void deletePatient() throws Exception
 			{
 
 			Doctor doctor = new Doctor();
