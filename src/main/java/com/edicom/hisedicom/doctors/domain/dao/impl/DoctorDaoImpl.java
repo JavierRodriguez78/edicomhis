@@ -35,9 +35,10 @@ public class DoctorDaoImpl implements IDoctorDao {
 	public Doctor getByCollegiateNumber(String collegiateNumber) {
 		// TODO Auto-generated method stub
 		String hql = "FROM Doctor as doctor where doctor.collegiatenumber=?1";
-		return (Doctor) entityManager.createQuery(hql)
-				.setParameter(1,collegiateNumber).getSingleResult();
-				
+	
+			List<Doctor> doctor=	 entityManager.createQuery(hql)
+				.setParameter(1,collegiateNumber).getResultList();
+			return 	(doctor.size()>1)? doctor.get(0): null;
 	}
 
 	@Override
