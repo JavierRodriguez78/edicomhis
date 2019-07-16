@@ -63,7 +63,16 @@ private IDoctorDao doctorRepository;
 		assertThat(doctor.getId()).isEqualTo(1);
 	}
 	
-	
+	@Test
+	public void aupdateDoctor()
+	{
+		Doctor doctor;
+		doctor = doctorRepository.getById((long)1);
+		doctor.setName("modificadooooo");
+		doctorRepository.update(doctor);
+		doctor = doctorRepository.getById((long)1);
+		assertThat(doctor.getName()).isEqualTo("modificadooooo");
+	}
 	@Test
 	@Order(4)
 	public void deleteDoctor()
@@ -71,4 +80,6 @@ private IDoctorDao doctorRepository;
 		int result = doctorRepository.deleteByCollegiateNumber("1");
 	     assertThat(result).isEqualTo(1);
 	}
+	
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edicom.hisedicom.patients.application.GeneralService;
 import com.edicom.hisedicom.patients.domain.dao.IPatientDao;
 import com.edicom.hisedicom.patients.domain.entities.Patient;
 import com.edicom.hisedicom.patients.domain.services.IPatientService;
@@ -20,6 +21,9 @@ public class PatientServiceImpl implements IPatientService{
 
 	@Autowired
 	private IPatientDao patientDao;
+	
+	@Autowired
+	private GeneralService generalService;
 
 	private static final Log logger = LogFactory.getLog("PatientServiceImpl.class");
 	
@@ -41,6 +45,7 @@ public class PatientServiceImpl implements IPatientService{
 	public Patient savePatient(Patient patient){
 		
 		try {
+			patient.setMedicalRecord(generalService.MedicalRecordGen());
 			return patientDao.save(patient);
 		}catch (Exception e)
 		{

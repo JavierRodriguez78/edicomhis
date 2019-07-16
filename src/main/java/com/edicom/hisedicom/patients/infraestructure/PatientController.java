@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.edicom.hisedicom.patients.application.GeneralService;
 import com.edicom.hisedicom.patients.domain.entities.Patient;
 import com.edicom.hisedicom.patients.domain.services.IPatientService;
 
@@ -23,6 +24,7 @@ public class PatientController {
 
 	@Autowired
 	private IPatientService patientService;
+	
 	@RequestMapping(value="hello", method= RequestMethod.POST, produces="application/json")
 	public ResponseEntity<Void> HelloWorld()
 	{
@@ -69,7 +71,7 @@ public class PatientController {
 			produces="application/json")
 	public ResponseEntity<Patient> savePatient (@RequestBody Patient patient)
 	{
-		patient.setMedicalRecord(this.MedicalRecordGen());
+		
 		Patient result = patientService.savePatient(patient);
 		return (result==null)?new ResponseEntity<>(HttpStatus.BAD_REQUEST)
 				:new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -85,9 +87,5 @@ public class PatientController {
 				: new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	private String MedicalRecordGen()
-	{
-		UID uid = new UID();
-		return "med-"+uid;
-	}
+	
 }

@@ -102,7 +102,7 @@ public class PatientsControllersTest {
 		doctor.setCreatedAt(fecha);
 		doctor.setSpecialty("General");
 		doctor.setLastname("Muños");
-		doctor.setCollegiatenumber("ldjldfjl");
+		doctor.setCollegiatenumber("ldjldfjlss");
 		//this.doctorService.saveDoctor(doctor);
 		patient.setName("xavi");
 		patient.setLastname("Rodriguez");
